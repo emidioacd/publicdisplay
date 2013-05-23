@@ -11,16 +11,18 @@ void MoviePlayer::update(){
 		movie.update();
 }
 void MoviePlayer::draw(){
+	ofSetColor(ofColor::white);
 	if(hasMovieLoaded)
 		movie.draw(500, MARGIN, SIZE, SIZE);
 }
 
 void MoviePlayer::keyPressed(int key){
-	if(key==OF_KEY_LEFT)
-		movie.setSpeed(-1);
-	else if(key==OF_KEY_RIGHT)
-		movie.setSpeed(2);
-	else if(key=='s')
+	//if(key==OF_KEY_LEFT)
+		//movie.setSpeed(-1);
+	//else if(key==OF_KEY_RIGHT)
+		//movie.setSpeed(2);
+	//else
+		if(key=='s')
 		movie.stop();
 	else if(key=='p')
 		if(movie.isPaused())

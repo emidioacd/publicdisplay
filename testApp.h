@@ -23,6 +23,15 @@ class testApp : public ofBaseApp{
 
 		Gallery gallery;
 		MoviePlayer player;
+private:
+	void testApp::changeMode();
+	bool testApp::isToChangeButton(int x, int y, int button);
+	void testApp::drawChangeButton();
+	int mode;
+	int changeButtonX;
+	int changeButtonY;
+	int changeButtonWidth;
+	int changeButtonHeight;
 //		ofDirectory dir;
 //		vector<ofVideoPlayer> movies;
 };
