@@ -45,14 +45,14 @@ void Gallery::draw(){
 			}else if(i!=0) wmargin+=SIZE + MARGIN;
 			ofSetColor(ofColor::white);
 			//movies[i].setFrame(20);
-			
+			if(thumbnailSelected==i)
+				ofSetColor(ofColor::blue);
 			drawFrame(wmargin, hmargin, i, movies[i]);
 			//movies[i].draw(wmargin, hmargin, SIZE, SIZE);
 		}
 		first=false;
 	//}
 }
-
 void Gallery::drawFrame(int wmargin, int hmargin, int index, ofVideoPlayer movie){
 	if(first){
 		thumbnailsImg[index].allocate(SIZE, SIZE, OF_IMAGE_COLOR);
@@ -67,9 +67,12 @@ void Gallery::keyPressed(int key){
 }
 
 void Gallery::swapThumbnails(int t1, int t2){
-	ofVideoPlayer aux = movies[t2];
+	ofVideoPlayer auxMov = movies[t2];
 	movies[t2] = movies[t1];
-	movies[t1] = aux;
+	movies[t1] = auxMov;
+	ofImage auxImg = thumbnailsImg[t2];
+	thumbnailsImg[t2] = thumbnailsImg[t1];
+	thumbnailsImg[t1] = auxImg;
 	thumbnailSelected=t2;
 }
 void Gallery::moveThumbnail(int key){
