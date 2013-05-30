@@ -15,6 +15,7 @@ void Gallery::setup(int galleryWidth){
 	numberOfMovies = dir.size();
 	for(int i = 0; i < numberOfMovies; i++){
 		movies[i].loadMovie(dir.getPath(i));
+		cout<<dir.getPath(i)<<endl;
 	}
 	ofBackground(ofColor::white);
 	first=true;
@@ -133,10 +134,16 @@ string Gallery::mousePressed(int x, int y, int button){
 	return movieURL;
 	
 }
+ofVideoPlayer Gallery::getVideoLoaded(){
+	return movies[thumbnailSelected];
+}
+
 int Gallery::getIndexMoviePressed(int x, int y){
 	int line = (y/totalSize);
 	return (x/totalSize)+line*items;
 }
+
+void Gallery::scroll(){}
 void Gallery::mouseReleased(int x, int y, int button){}
 void Gallery::windowResized(int w, int h){}
 void Gallery::gotMessage(ofMessage msg){}

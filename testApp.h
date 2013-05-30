@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "gallery.h"
 #include "MoviePlayer.h"
+#include "Timeline.h"
 
 class testApp : public ofBaseApp{
 	public:
@@ -21,8 +22,18 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-		Gallery gallery;
-		MoviePlayer player;
+private:
+	Gallery gallery;
+	MoviePlayer player;
+	Timeline timeline;
+	void testApp::changeMode();
+	bool testApp::isToChangeButton(int x, int y, int button);
+	void testApp::drawChangeButton();
+	int mode;
+	int changeButtonX;
+	int changeButtonY;
+	int changeButtonWidth;
+	int changeButtonHeight;
 //		ofDirectory dir;
 //		vector<ofVideoPlayer> movies;
 };

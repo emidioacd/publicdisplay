@@ -19,11 +19,14 @@ public:
 	void mouseReleased(int x, int y, int button);
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
-	void Gallery::drawFrame(int wmargin, int hmargin, int index, ofVideoPlayer movie);
+	void drawFrame(int wmargin, int hmargin, int index, ofVideoPlayer movie);
 	void gotMessage(ofMessage msg);
+	void scroll();
+	ofVideoPlayer getVideoLoaded();
 	ofDirectory dir;
 	vector<ofVideoPlayer> movies;
 	vector<ofImage> thumbnailsImg;
+
 private:
 	int width;
 	int getIndexMoviePressed(int x, int y);
