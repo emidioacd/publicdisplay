@@ -4,17 +4,23 @@ MoviePlayer::MoviePlayer(void){
 	hasMovieLoaded = false;}
 MoviePlayer::~MoviePlayer(void){}
 
-void MoviePlayer::setup(){
-	float dim = 24; 
+void MoviePlayer::setup(int topBarHeigh){
+	float dim = 20; 
 	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING; 
     float length = 320-xInit; 
-    gui = new ofxUICanvas(PLAYERPOSX, MARGIN+SIZE, SIZE, dim+10);
-	gui->setVisible(false);
+	sliderHeight= dim;
+
+	//Player
+	playerPosX = 600;
+	playerPosY = topBarHeigh+50;
+	playerHeight = 400;//ofGetWindowHeight()-topBarHeigh-sliderHeight;
+	playerWidth = playerHeight;
 	
-	//ofImage img;
-	//img.loadImage("images/play_button.png");
-	//gui->addImage("PLAY", &img, 20.0, 20.0);
-    slider = gui->addSlider("RED", 0.0, MAX_SLIDER_VALUE, red, SIZE-7, dim);
+	//slider
+	int sliderY= playerPosY+playerHeight;
+    gui = new ofxUICanvas(playerPosX, sliderY, playerWidth, sliderHeight);
+	gui->setVisible(false);
+    slider = gui->addSlider("RED", 0.0, MAX_SLIDER_VALUE, red, playerWidth-10, sliderHeight-10);
 	slider->setVisible(false);
     ofAddListener(gui->newGUIEvent, this, &MoviePlayer::guiEvent);	
 }
@@ -26,11 +32,11 @@ void MoviePlayer::draw(){
 	ofPushStyle(); 
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);     
     ofSetColor(255);
-    middle.getTextureReference().drawSubsection(ofGetWidth()*.5, ofGetHeight()*.5, middle.getWidth()*10, middle.getHeight(), middle.getWidth(),0,1,middle.getHeight());
+    //middle.getTextureReference().drawSubsection(ofGetWidth()*.5, ofGetHeight()*.5, middle.getWidth()*10, middle.getHeight(), middle.getWidth(),0,1,middle.getHeight());
 	ofPopStyle();
 	ofSetColor(ofColor::white);
 	if(hasMovieLoaded){
-		movie.draw(PLAYERPOSX, MARGIN, SIZE, SIZE);
+		movie.draw(playerPosX, playerPosY, playerWidth, playerHeight);
 		float currentF = (float)movie.getCurrentFrame();
 		int totalF = (float)movie.getTotalNumFrames();
 		//regra tres simples
@@ -46,14 +52,10 @@ void MoviePlayer::guiEvent(ofxUIEventArgs &e)
 	
 	if(name == "RED")	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		cout << "total: " << movie.getTotalNumFrames() << endl;
-        cout << "currentFrame: " << movie.getCurrentFrame() << endl;
 		int val = (int)slider->getScaledValue();
 		//regra tres simples
 		int pos = (val*movie.getTotalNumFrames())/MAX_SLIDER_VALUE;
 		movie.setFrame(pos);
-        cout << "value: " << pos << endl; 
-        cout << "currentFrame: " << movie.getCurrentFrame() << endl; 
 	}
 	if(name == "PLAY")
         cout << "EH MAMACUDI !!" << endl; 
@@ -66,7 +68,7 @@ void MoviePlayer::keyPressed(int key){
 	//else if(key==OF_KEY_RIGHT)
 		//movie.setSpeed(2);
 	//else
-		if(key=='s')
+	if(key=='s')
 		movie.stop();
 	else if(key=='p')
 		if(movie.isPaused())
@@ -83,7 +85,6 @@ void MoviePlayer::mouseReleased(int x, int y, int button){}
 void MoviePlayer::windowResized(int w, int h){}
 void MoviePlayer::gotMessage(ofMessage msg){}
 void MoviePlayer::dragEvent(ofDragInfo dragInfo){}
-
 
 void MoviePlayer::movieToPlayer(string movieToPlay){
 	movie.loadMovie(movieToPlay);

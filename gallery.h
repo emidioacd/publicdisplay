@@ -1,8 +1,14 @@
 #pragma once
 
 #include "ofMain.h"
-#define MARGIN 40
-#define SIZE 100
+#include "mIcon.h"
+#define MARGIN 60
+#define MARGINBETWEENTHUMBNAIL 30
+#define SIZE_G 100
+#include <sstream>
+
+#define SSTR( x ) dynamic_cast< std::ostringstream & >( \
+        ( std::ostringstream() << std::dec << x ) ).str()
 class Gallery {
 public:
 	Gallery(){}
@@ -14,7 +20,6 @@ public:
 	void keyReleased(int key);
 	void mouseMoved(int x, int y);
 	void mouseDragged(int x, int y, int button);
-	bool movieWasPressed(int x, int y, int button);
 	string mousePressed(int x, int y, int button);
 	void mouseReleased(int x, int y, int button);
 	void windowResized(int w, int h);
@@ -25,7 +30,7 @@ public:
 	ofVideoPlayer getVideoLoaded();
 	ofDirectory dir;
 	vector<ofVideoPlayer> movies;
-	vector<ofImage> thumbnailsImg;
+	vector<mIcon> thumbnailsImg;
 
 private:
 	int width;
@@ -38,5 +43,7 @@ private:
 	int numThumbnails;
 	int numberOfMovies;
 	int first;
+	int galleryWidth;
+	int galleryHeight;
 
 };

@@ -2,15 +2,13 @@
 #include "ofMain.h"
 #include "ofxUI.h"
 #define MARGIN 40
-#define SIZE 500
 #define MAX_SLIDER_VALUE 100.0
-#define PLAYERPOSX 500
 class MoviePlayer
 {
 public:
 	MoviePlayer(void);
 	~MoviePlayer(void);
-	void setup();
+	void setup(int topBarHeight);
 	void update();
 	void draw();
 	void keyPressed(int key);
@@ -29,13 +27,19 @@ public:
 	void guiEvent(ofxUIEventArgs &e);
     bool drawPadding; 
 	float red, green, blue;
-    
     ofImage middle; 
 private:
+	int playerPosX;
+	int playerPosY;
 	bool hasMovieLoaded;
 	ofDirectory dir;
 	ofVideoPlayer movie;
 	ofxUISlider* slider;
+
+	int playerWidth;
+	int playerHeight;
+	int sliderHeight;
+
 	
 };
 
