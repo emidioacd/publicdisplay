@@ -2,13 +2,14 @@
 
 #include "ofMain.h"
 #include "mIcon.h"
-#define MARGIN 60
+#include "ofxXmlSettings.h"
+#define MARGIN_G 60
 #define MARGINBETWEENTHUMBNAIL 30
 #define SIZE_G 100
 #include <sstream>
 
-#define SSTR( x ) dynamic_cast< std::ostringstream & >( \
-        ( std::ostringstream() << std::dec << x ) ).str()
+const string xmlFile = "settings.xml";
+
 class Gallery {
 public:
 	Gallery(){}
@@ -27,16 +28,17 @@ public:
 	void drawFrame(int wmargin, int hmargin, int index, ofVideoPlayer movie);
 	void gotMessage(ofMessage msg);
 	void scroll();
+	string toString(int value);
 	ofVideoPlayer getVideoLoaded();
+	void saveGallery();
+
+
 	ofDirectory dir;
 	vector<ofVideoPlayer> movies;
 	vector<mIcon> thumbnailsImg;
 
 private:
 	int width;
-	int getIndexMoviePressed(int x, int y);
-	void moveThumbnail(int key);
-	void swapThumbnails(int t1, int t2);
 	int thumbnailSelected;
 	int items;
 	int totalSize;
@@ -45,5 +47,11 @@ private:
 	int first;
 	int galleryWidth;
 	int galleryHeight;
+
+	string convertInt(int number);
+	int getIndexMoviePressed(int x, int y);
+	void moveThumbnail(int key);
+	void swapThumbnails(int t1, int t2);
+	bool loadGallery();
 
 };

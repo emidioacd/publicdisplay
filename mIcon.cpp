@@ -1,7 +1,9 @@
 #include "mIcon.h"
 
 mIcon::mIcon(void){
-	image = ofImage();}
+	image = ofImage();
+	firstFrame=0;
+}
 mIcon::~mIcon(void){}
 
 	int mIcon::getX(){
@@ -12,6 +14,18 @@ mIcon::~mIcon(void){}
 	}
 	ofImage mIcon::getImage(){
 		return image;
+	}
+	string mIcon::getUrl(){
+		return url;
+	}
+	int mIcon::getFirstFrame(){
+		return firstFrame;
+	}
+	int mIcon::getWidth(){
+		return width;
+	}
+	int mIcon::getHeight(){
+		return height;
 	}
 	void mIcon::setX(int value){
 		x=value;
@@ -28,7 +42,13 @@ mIcon::~mIcon(void){}
 	void mIcon::setImage(ofImage value){
 		image=value;
 	}
+	void mIcon::setUrl(string url){
+		this->url = url;
+	}
+	void mIcon::setFirstFrame(int frame){
+		this->firstFrame = frame;
+	}
 	bool mIcon::isOnImage(int valX, int valY){	
-		return(x < valX < x+width && y < valY < y+width);
+		return(x < valX && valX < x+width && y < valY && valY < y+height);
 	}
 

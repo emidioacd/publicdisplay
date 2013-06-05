@@ -83,4 +83,10 @@ void testApp::guiEvent(ofxUIEventArgs &e){
 		timelineButton->setValue(false);
 	}
 }
+void testApp::exit(){
+	cout<<"gtfouuuut"<<endl;
+	cout<<"gtfouuuut"<<endl;
+	cout<<"gtfouuuut"<<endl;
+	gallery.saveGallery();
+}
 
