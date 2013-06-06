@@ -1,18 +1,21 @@
 #include "mIcon.h"
 
 
-    void mIcon::setup(int x0, int y0, int w, int h, ofVideoPlayer m){
+    void mIcon::setup(int x0, int y0, int w, int h, string path){
         cout << "loading movie: "<< url<<endl;
 
         x = x0;
         y = y0;
         width = w;
         height = h;
-        movie = m;
+        url = path;
+        movie = ofVideoPlayer();
+        movie.loadMovie(path);
+        movie.setVolume(0);
+
         currentFrame = 0;
         wait = 0;
-        totalFrames = m.getTotalNumFrames();
-
+        totalFrames = movie.getTotalNumFrames();
 
 		/*image.allocate(width, height, OF_IMAGE_COLOR);
         ofImage img = ofImage();
@@ -30,6 +33,7 @@
 
             wait = 0;
         }
+        movie.update();
 
 	}
 

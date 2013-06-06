@@ -102,7 +102,7 @@ void MoviePlayer::dragEvent(ofDragInfo dragInfo){}
 
 void MoviePlayer::movieToPlayer(string movieToPlay){
 	movie.loadMovie(movieToPlay);
-
+    movie.setVolume(1);
     int movieHeight = movie.getHeight();
 	int movieWidth = movie.getWidth();
 

@@ -37,6 +37,7 @@ public:
 	vector<ofVideoPlayer> movies;
 	vector<mIcon> thumbnailsImg;
 
+
 private:
 	int width;
 	int thumbnailSelected;

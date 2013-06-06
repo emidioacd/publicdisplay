@@ -19,15 +19,12 @@ void Gallery::setup(int galleryWidth){
         string path = dir.getPath(i);
         movies[i].loadMovie(path);
         cout<<"path: "<<dir.getPath(i)<<endl;
-        thumbnailsImg[i].setUrl(path);
+        //thumbnailsImg[i].setUrl(path);
 
     }
 	//}
 	ofBackground(ofColor::white);
     first = true;
-
-
-
 
 }
 
@@ -62,7 +59,7 @@ void Gallery::draw(){
 			ofSetColor(ofColor::blue);
 
         if(first)
-            thumbnailsImg[i].setup(wmargin, hmargin, SIZE_G, SIZE_G, movies[i]);
+            thumbnailsImg[i].setup(wmargin, hmargin, SIZE_G, SIZE_G,movies[i].getMoviePath());
 
         thumbnailsImg[i].draw();
 	}
@@ -115,14 +112,14 @@ void Gallery::mouseDragged(int x, int y, int button){}
 
 string Gallery::mousePressed(int x, int y, int button){
 	string movieURL = "";
-	ofVideoPlayer movie;
+
 	//Percorre a todas as thumbnails ate' 'a que foi selecionada
 	for(int i = 0; i < thumbnailsImg.size(); i++)
 	{
 		if(thumbnailsImg[i].isOnImage(x, y))
 		{
-			movie = movies[i];
 
+            movies[i].setVolume(0);
 			thumbnailSelected = i;
 			if(button == 2)
 			{
@@ -136,7 +133,7 @@ string Gallery::mousePressed(int x, int y, int button){
 				} else
 					movies[i].setPaused(true);
 			}
-		movieURL = movie.getMoviePath();
+		movieURL = movies[i].getMoviePath();
 		break;
 		}
 
@@ -150,9 +147,14 @@ int Gallery::getIndexMoviePressed(int x, int y){
 	int line = (y/totalSize);
 	return (x/totalSize)+line*items;
 }
+
+
 ofVideoPlayer Gallery::getVideoLoaded(){
 	return movies[thumbnailSelected];
 }
+
+
+
 /** guarda num ficheiro de XML os parametros dos videos
 	e' chamado no testApp.exit()
 */

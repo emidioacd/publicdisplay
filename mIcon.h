@@ -14,7 +14,7 @@ public:
 	ofImage getImage();
 	int getFirstFrame();
 	string getUrl();
-    void setup(int x, int y, int w, int h, ofVideoPlayer movie);
+    void setup(int x, int y, int w, int h,string url);
 	void update();
 	void draw();
 
