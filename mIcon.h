@@ -1,12 +1,12 @@
 #pragma once
 #include "ofMain.h"
-
+#include "ofxXmlSettings.h"
 class mIcon
 {
 public:
-	mIcon(void);
-	~mIcon(void);
-	
+	mIcon(void){}
+	~mIcon(void){}
+
 	int getX();
 	int getY();
 	int getWidth();
@@ -14,6 +14,9 @@ public:
 	ofImage getImage();
 	int getFirstFrame();
 	string getUrl();
+    void setup(int x, int y, int w, int h, ofVideoPlayer movie);
+	void update();
+	void draw();
 
 	void setX(int value);
 	void setY(int value);
@@ -23,14 +26,24 @@ public:
 	bool isOnImage(int valX, int valY);
 	void setFirstFrame(int frame);
 	void setUrl(string url);
+
+
+
+
 private:
 	int x;
 	int y;
 	int width;
 	int height;
 	int firstFrame;
+	int wait;
+	int currentFrame;
+	int totalFrames;
 	string url;
-    ofImage image;
-	
+	ofVideoPlayer movie;
+	ofImage image;
+
+
+
 };
 

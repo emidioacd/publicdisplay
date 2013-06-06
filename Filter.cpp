@@ -20,11 +20,11 @@ void Filter::update(){
     //blurFilter();
     //bwFilter();
     //greyFilter();
-    edgesFilter();
+    //edgesFilter();
 }
 
 void Filter::draw(){
-    videoTexture.draw(posX,posY,playerWidth,playerHeight);
+    //videoTexture.draw(posX,posY,playerWidth,playerHeight);
 }
 
 void Filter::negativeFilter(){

@@ -7,36 +7,39 @@ void Gallery::setup(int galleryWidth){
 	totalSize = SIZE_G + MARGIN_G;
 
 	//if(!loadGallery()){
-		dir.listDir("movies");
-		dir.sort(); // in linux the file system doesn't return file lists ordered in alphabetical order
-		ofSetVerticalSync(true);
-		if( dir.size() ){
-			movies.assign(dir.size(), ofVideoPlayer());
-			thumbnailsImg.assign(dir.size(), mIcon());
-		}
-		numberOfMovies = dir.size();
-		for(int i = 0 ; i < numberOfMovies ; i++){
-			string path = dir.getPath(i);
-			movies[i].loadMovie(path);
-			cout<<"path: "<<dir.getPath(i)<<endl;
-			thumbnailsImg[i].setUrl(path);
+    dir.listDir("movies");
+    dir.sort(); // in linux the file system doesn't return file lists ordered in alphabetical order
+    ofSetVerticalSync(true);
+    if( dir.size() ){
+        movies.assign(dir.size(), ofVideoPlayer());
+        thumbnailsImg.assign(dir.size(), mIcon());
+    }
+    numberOfMovies = dir.size();
+    for(int i = 0 ; i < numberOfMovies ; i++){
+        string path = dir.getPath(i);
+        movies[i].loadMovie(path);
+        cout<<"path: "<<dir.getPath(i)<<endl;
+        thumbnailsImg[i].setUrl(path);
 
-			//TODO so para teste
-			if(i!=0)
-				thumbnailsImg[i].setFirstFrame(50);
-			}
+    }
 	//}
 	ofBackground(ofColor::white);
-	first=true;
+    first = true;
+
+
+
+
 }
+
 void Gallery::update(){
 	for(int i = 0; i < (int)dir.size(); i++){
 		movies[i].update();
+        thumbnailsImg[i].update();
 	}
 }
 
 void Gallery::draw(){
-	if(numberOfMovies == 0){
+    if(numberOfMovies == 0){
 		ofSetColor(ofColor::gray);
 		string no_videos = "No videos!";
 		ofDrawBitmapString(no_videos, ofGetWidth()/2 , ofGetHeight()/2);
@@ -57,31 +60,16 @@ void Gallery::draw(){
 
 		if(thumbnailSelected==i)
 			ofSetColor(ofColor::blue);
-		drawFrame(wmargin, hmargin, i, movies[i]);
 
-		//movies[i].draw(wmargin, hmargin, SIZE_G, SIZE_G);
+        if(first)
+            thumbnailsImg[i].setup(wmargin, hmargin, SIZE_G, SIZE_G, movies[i]);
+
+        thumbnailsImg[i].draw();
 	}
 	first=false;
-//}
-}
-void Gallery::drawFrame(int x, int y, int index, ofVideoPlayer movie){
-	if(first){
-		cout << "loading movie"<<endl;
-		thumbnailsImg[index].getImage().allocate(SIZE_G, SIZE_G, OF_IMAGE_COLOR);
-		ofImage img = ofImage();
-		img.setFromPixels(movie.getPixelsRef());
-
-		thumbnailsImg[index].setImage(img);
-		thumbnailsImg[index].setX(x);
-		thumbnailsImg[index].setY(y);
-		thumbnailsImg[index].setWidth(SIZE_G);
-		thumbnailsImg[index].setHeight(SIZE_G);
-		thumbnailsImg[index].getImage().draw(x, y, SIZE_G, SIZE_G);
-	}else{
-		thumbnailsImg[index].getImage().draw(thumbnailsImg[index].getX(), thumbnailsImg[index].getY(), thumbnailsImg[index].getWidth(), thumbnailsImg[index].getHeight());
-	}
 
 }
+
 
 void Gallery::keyPressed(int key){
 	moveThumbnail(key);

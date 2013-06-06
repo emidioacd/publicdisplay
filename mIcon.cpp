@@ -1,10 +1,43 @@
 #include "mIcon.h"
 
-mIcon::mIcon(void){
-	image = ofImage();
-	firstFrame=0;
-}
-mIcon::~mIcon(void){}
+
+    void mIcon::setup(int x0, int y0, int w, int h, ofVideoPlayer m){
+        cout << "loading movie: "<< url<<endl;
+
+        x = x0;
+        y = y0;
+        width = w;
+        height = h;
+        movie = m;
+        currentFrame = 0;
+        wait = 0;
+        totalFrames = m.getTotalNumFrames();
+
+
+		/*image.allocate(width, height, OF_IMAGE_COLOR);
+        ofImage img = ofImage();
+        img.setFromPixels(m.getPixelsRef());
+        frames[0] = img;*/
+    }
+
+
+	void mIcon::update(){
+	    int jump = totalFrames/10;
+        wait++;
+        if(wait == 20){
+            currentFrame+=jump;
+            currentFrame = currentFrame%totalFrames;
+
+            wait = 0;
+        }
+
+	}
+
+	void mIcon::draw(){
+	    movie.setFrame(currentFrame);
+        movie.draw(x, y, width, height);
+
+    }
 
 	int mIcon::getX(){
 		return x;
