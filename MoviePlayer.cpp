@@ -5,38 +5,47 @@ MoviePlayer::MoviePlayer(void){
 MoviePlayer::~MoviePlayer(void){}
 
 void MoviePlayer::setup(int topBarHeigh){
-	float dim = 20; 
-	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING; 
-    float length = 320-xInit; 
+	float dim = 20;
+	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING;
+    float length = 320-xInit;
 	sliderHeight= dim;
 
 	//Player
 	playerPosX = 600;
-	playerPosY = topBarHeigh+50;
+	playerPosY = topBarHeigh + 50;
 	playerHeight = 400;//ofGetWindowHeight()-topBarHeigh-sliderHeight;
 	playerWidth = playerHeight;
-	
+
 	//slider
 	int sliderY= playerPosY+playerHeight;
     gui = new ofxUICanvas(playerPosX, sliderY, playerWidth, sliderHeight);
 	gui->setVisible(false);
     slider = gui->addSlider("RED", 0.0, MAX_SLIDER_VALUE, red, playerWidth-10, sliderHeight-10);
 	slider->setVisible(false);
-    ofAddListener(gui->newGUIEvent, this, &MoviePlayer::guiEvent);	
+    ofAddListener(gui->newGUIEvent, this, &MoviePlayer::guiEvent);
+
+
 }
 void MoviePlayer::update(){
-	if(hasMovieLoaded)
+	if(hasMovieLoaded){
 		movie.update();
+		filter.update();
+    }
+
+
+
 }
 void MoviePlayer::draw(){
-	ofPushStyle(); 
-	ofEnableBlendMode(OF_BLENDMODE_ALPHA);     
+	ofPushStyle();
+	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
     ofSetColor(255);
     //middle.getTextureReference().drawSubsection(ofGetWidth()*.5, ofGetHeight()*.5, middle.getWidth()*10, middle.getHeight(), middle.getWidth(),0,1,middle.getHeight());
 	ofPopStyle();
 	ofSetColor(ofColor::white);
 	if(hasMovieLoaded){
 		movie.draw(playerPosX, playerPosY, playerWidth, playerHeight);
+        filter.draw();
+
 		float currentF = (float)movie.getCurrentFrame();
 		int totalF = (float)movie.getTotalNumFrames();
 		//regra tres simples
@@ -45,11 +54,16 @@ void MoviePlayer::draw(){
 	}
 }
 
+
+
+
+
+
 void MoviePlayer::guiEvent(ofxUIEventArgs &e)
 {
-	string name = e.widget->getName(); 
-	int kind = e.widget->getKind(); 
-	
+	string name = e.widget->getName();
+	int kind = e.widget->getKind();
+
 	if(name == "RED")	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		int val = (int)slider->getScaledValue();
@@ -58,7 +72,7 @@ void MoviePlayer::guiEvent(ofxUIEventArgs &e)
 		movie.setFrame(pos);
 	}
 	if(name == "PLAY")
-        cout << "EH MAMACUDI !!" << endl; 
+        cout << "EH MAMACUDI !!" << endl;
 
 }
 
@@ -73,7 +87,7 @@ void MoviePlayer::keyPressed(int key){
 	else if(key=='p')
 		if(movie.isPaused())
 			movie.setPaused(false);
-		else 
+		else
 			movie.setPaused(true);
 }
 void MoviePlayer::keyReleased(int key){}
@@ -88,9 +102,16 @@ void MoviePlayer::dragEvent(ofDragInfo dragInfo){}
 
 void MoviePlayer::movieToPlayer(string movieToPlay){
 	movie.loadMovie(movieToPlay);
+
+    int movieHeight = movie.getHeight();
+	int movieWidth = movie.getWidth();
+
+    filter.setup(playerPosX, playerPosY, movieHeight,movieWidth, playerHeight,playerWidth, movie);
+
 	hasMovieLoaded = true;
 	slider->setVisible(true);
 	gui->setVisible(true);
+	ofLog(OF_LOG_NOTICE, "Player > Video carregado: "+movieToPlay);
 	ofLog(OF_LOG_NOTICE, "Player > Video carregado: "+movieToPlay);
 	movie.play();
 }

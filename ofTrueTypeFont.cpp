@@ -256,11 +256,11 @@ bool ofTrueTypeFont::loadFont(string _filename, int _fontSize, bool _bAntiAliase
 	dpi 				= _dpi;
 
 	//--------------- load the library and typeface
-	
+
     FT_Error err;
-    
+
     FT_Library library;
-    
+
     err = FT_Init_FreeType( &library );
     if (err){
 		ofLog(OF_LOG_ERROR,"ofTrueTypeFont::loadFont - Error initializing freetype lib: FT_Error = %d", err);
@@ -268,7 +268,7 @@ bool ofTrueTypeFont::loadFont(string _filename, int _fontSize, bool _bAntiAliase
 	}
 
 	FT_Face face;
-    
+
     err = FT_New_Face( library, filename.c_str(), 0, &face );
 	if (err) {
         // simple error table in lieu of full table (see fterrors.h)
@@ -307,7 +307,7 @@ bool ofTrueTypeFont::loadFont(string _filename, int _fontSize, bool _bAntiAliase
 		err = FT_Load_Glyph( face, FT_Get_Char_Index( face, (unsigned char)(i+NUM_CHARACTER_TO_START) ), FT_LOAD_DEFAULT );
         if(err){
 			ofLog(OF_LOG_ERROR,"ofTrueTypeFont::loadFont - Error with FT_Load_Glyph %i: FT_Error = %d", i, err);
-                        
+
 		}
 
 		if (bAntiAliased == true) FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);
@@ -558,10 +558,10 @@ ofTTFCharacter ofTrueTypeFont::getCharacterAsPoints(int character){
 	}
     if (character - NUM_CHARACTER_TO_START >= nCharacters || character < NUM_CHARACTER_TO_START){
         ofLog(OF_LOG_ERROR,"Error : char (%i) not allocated -- line %d in %s", (character + NUM_CHARACTER_TO_START), __LINE__,__FILE__);
-        
+
         return ofTTFCharacter();
     }
-    
+
     return charOutlines[character - NUM_CHARACTER_TO_START];
 }
 
@@ -774,7 +774,7 @@ void ofTrueTypeFont::drawString(string c, float x, float y) {
 				Y += lineHeight;
 				X = x ; //reset X Pos back to zero
 
-		  }else if (c[index] == ' ') {
+		  } else if (c[index] == ' ') {
 				 int cy = (int)'p' - NUM_CHARACTER_TO_START;
 				 X += cps[cy].setWidth * letterSpacing * spaceSize;
 		  } else if(cy > -1){

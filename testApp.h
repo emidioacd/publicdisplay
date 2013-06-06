@@ -5,6 +5,7 @@
 #include "MoviePlayer.h"
 #include "Timeline.h"
 #include "ofxUI.h"
+#include "ofxXmlSettings.h"
 
 #define MARGIN 40
 class testApp : public ofBaseApp{
@@ -35,7 +36,7 @@ private:
 	int changeButtonHeight;
 	ofxUICanvas* guiSidebar;
 	MoviePlayer player;
-	ofxUICanvas* guiSidebarGallery;  
+	ofxUICanvas* guiSidebarGallery;
 	ofxUILabelButton* timelineButton;
 	ofxUILabelButton* galleryButton;
 	void guiEvent(ofxUIEventArgs &e);

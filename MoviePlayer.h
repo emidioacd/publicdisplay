@@ -1,6 +1,7 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxUI.h"
+#include "Filter.h"
 #define MARGIN 40
 #define MAX_SLIDER_VALUE 100.0
 class MoviePlayer
@@ -21,13 +22,14 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 	void movieToPlayer(string movie);
-	ofVideoPlayer getMovieLoaded();	
+
+	ofVideoPlayer getMovieLoaded();
 	bool isMovieLoaded();
-	ofxUICanvas *gui;   	
+	ofxUICanvas *gui;
 	void guiEvent(ofxUIEventArgs &e);
-    bool drawPadding; 
+    bool drawPadding;
 	float red, green, blue;
-    ofImage middle; 
+    ofImage middle;
 private:
 	int playerPosX;
 	int playerPosY;
@@ -39,7 +41,8 @@ private:
 	int playerWidth;
 	int playerHeight;
 	int sliderHeight;
+    Filter filter;
 
-	
+
 };
 

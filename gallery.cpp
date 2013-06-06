@@ -6,7 +6,7 @@ void Gallery::setup(int galleryWidth){
 	items = width/(SIZE_G + MARGINBETWEENTHUMBNAIL);
 	totalSize = SIZE_G + MARGIN_G;
 
-	if(!loadGallery()){
+	//if(!loadGallery()){
 		dir.listDir("movies");
 		dir.sort(); // in linux the file system doesn't return file lists ordered in alphabetical order
 		ofSetVerticalSync(true);
@@ -20,12 +20,12 @@ void Gallery::setup(int galleryWidth){
 			movies[i].loadMovie(path);
 			cout<<"path: "<<dir.getPath(i)<<endl;
 			thumbnailsImg[i].setUrl(path);
-		
+
 			//TODO so para teste
 			if(i!=0)
-				thumbnailsImg[i].setFirstFrame(50); 
+				thumbnailsImg[i].setFirstFrame(50);
 			}
-	}	
+	//}
 	ofBackground(ofColor::white);
 	first=true;
 }
@@ -43,14 +43,14 @@ void Gallery::draw(){
 	}
 	int hmargin = MARGIN_G;
 	int wmargin = MARGIN_G;
-		
+
 	for(int i = 0 ; i < numberOfMovies ; i++){
 		if(first){
 			if(i != 0 && i%items == 0){
 				hmargin += SIZE_G + MARGINBETWEENTHUMBNAIL;
 				wmargin = MARGIN_G;
-			}else 
-				if(i!=0) 
+			}else
+				if(i!=0)
 					wmargin += SIZE_G + MARGINBETWEENTHUMBNAIL;
 		}
 		ofSetColor(ofColor::white);
@@ -58,6 +58,7 @@ void Gallery::draw(){
 		if(thumbnailSelected==i)
 			ofSetColor(ofColor::blue);
 		drawFrame(wmargin, hmargin, i, movies[i]);
+
 		//movies[i].draw(wmargin, hmargin, SIZE_G, SIZE_G);
 	}
 	first=false;
@@ -69,6 +70,7 @@ void Gallery::drawFrame(int x, int y, int index, ofVideoPlayer movie){
 		thumbnailsImg[index].getImage().allocate(SIZE_G, SIZE_G, OF_IMAGE_COLOR);
 		ofImage img = ofImage();
 		img.setFromPixels(movie.getPixelsRef());
+
 		thumbnailsImg[index].setImage(img);
 		thumbnailsImg[index].setX(x);
 		thumbnailsImg[index].setY(y);
@@ -97,6 +99,8 @@ void Gallery::swapThumbnails(int t1, int t2){
 	thumbnailsImg[t2].setUrl(auxUrl);
 	thumbnailSelected=t2;
 }
+
+
 void Gallery::moveThumbnail(int key){
 	if(thumbnailSelected!=-1){
 		if(key==OF_KEY_LEFT){
@@ -130,7 +134,7 @@ string Gallery::mousePressed(int x, int y, int button){
 		if(thumbnailsImg[i].isOnImage(x, y))
 		{
 			movie = movies[i];
-			
+
 			thumbnailSelected = i;
 			if(button == 2)
 			{
@@ -141,13 +145,13 @@ string Gallery::mousePressed(int x, int y, int button){
 				{
 					movies[i].setPaused(false);
 					movies[i].play();
-				} else 
+				} else
 					movies[i].setPaused(true);
 			}
 		movieURL = movie.getMoviePath();
 		break;
 		}
-		
+
 	}
 	if(movieURL=="")
 		thumbnailSelected = -1;
@@ -180,9 +184,9 @@ void Gallery::saveGallery(){
 		settings.pushTag("video",i);
 
 		//adiciona os parametros do no' video
-		settings.addValue("url", mIcon.getUrl()); 
+		settings.addValue("url", mIcon.getUrl());
 		settings.addValue("firstFrame", toString(mIcon.getFirstFrame()));
-		
+
 		//conclui a edicao do no video
 		settings.popTag();
 	}
@@ -190,6 +194,7 @@ void Gallery::saveGallery(){
 	settings.popTag();
 	settings.saveFile(xmlFile);
 }
+
 //guarda estado da galeria (ordem de apresentacao, frame de inicio, TODO)
 bool Gallery::loadGallery(){
 	ofxXmlSettings settings;
@@ -197,7 +202,7 @@ bool Gallery::loadGallery(){
 	if(hasFile)
 	{
 		settings.pushTag("videos");
-		
+
 		int numTags = settings.getNumTags("video");
 		numberOfMovies = numTags;
 		movies.assign(numTags, ofVideoPlayer());
@@ -213,7 +218,7 @@ bool Gallery::loadGallery(){
 			movies[i].loadMovie(url);
 			thumbnailsImg[i].setUrl(url);
 			settings.popTag();
-		} 
+		}
 			settings.popTag();
 	}
 	return hasFile;

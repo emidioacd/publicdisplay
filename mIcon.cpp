@@ -48,7 +48,7 @@ mIcon::~mIcon(void){}
 	void mIcon::setFirstFrame(int frame){
 		this->firstFrame = frame;
 	}
-	bool mIcon::isOnImage(int valX, int valY){	
+	bool mIcon::isOnImage(int valX, int valY){
 		return(x < valX && valX < x+width && y < valY && valY < y+height);
 	}
 
