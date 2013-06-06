@@ -26,15 +26,16 @@ public:
 	bool isOnImage(int valX, int valY);
 	void setFirstFrame(int frame);
 	void setUrl(string url);
+	void mouseMoved(int x, int y);
 
-
-
-
-private:
-	int x;
+    int x;
 	int y;
 	int width;
 	int height;
+
+
+private:
+
 	int firstFrame;
 	int wait;
 	int currentFrame;
@@ -42,6 +43,7 @@ private:
 	string url;
 	ofVideoPlayer movie;
 	ofImage image;
+	bool hover;
 
 
 

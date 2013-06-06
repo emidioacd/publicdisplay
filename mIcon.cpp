@@ -3,7 +3,7 @@
 
     void mIcon::setup(int x0, int y0, int w, int h, string path){
         cout << "loading movie: "<< url<<endl;
-
+        hover = false;
         x = x0;
         y = y0;
         width = w;
@@ -27,19 +27,31 @@
 	void mIcon::update(){
 	    int jump = totalFrames/10;
         wait++;
-        if(wait == 20){
-            currentFrame+=jump;
-            currentFrame = currentFrame%totalFrames;
-
+        if(wait == 10){
+            if(hover){
+                currentFrame+=jump;
+                currentFrame = currentFrame%totalFrames;
+            }else currentFrame = 0;
             wait = 0;
         }
         movie.update();
 
 	}
 
-	void mIcon::draw(){
+	void mIcon::draw()
+	{
 	    movie.setFrame(currentFrame);
+
         movie.draw(x, y, width, height);
+
+
+    }
+    void mIcon::mouseMoved(int mouseX, int mouseY){
+
+        if((mouseX>x && mouseX<x+width) && (mouseY>y && mouseY<y+height)){
+            hover = true;
+
+        }else hover = false;
 
     }
 
@@ -81,6 +93,8 @@
 	}
 	void mIcon::setUrl(string url){
 		this->url = url;
+        movie = ofVideoPlayer();
+        movie.loadMovie(url);
 	}
 	void mIcon::setFirstFrame(int frame){
 		this->firstFrame = frame;

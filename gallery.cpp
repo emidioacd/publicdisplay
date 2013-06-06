@@ -78,9 +78,9 @@ void Gallery::swapThumbnails(int t1, int t2){
 	movies[t1] = auxMov;
 	ofImage auxImg = thumbnailsImg[t1].getImage();
 	string auxUrl = thumbnailsImg[t1].getUrl();
-	thumbnailsImg[t1].setImage(thumbnailsImg[t2].getImage());
+	//thumbnailsImg[t1].setImage(thumbnailsImg[t2].getImage());
 	thumbnailsImg[t1].setUrl(thumbnailsImg[t2].getUrl());
-	thumbnailsImg[t2].setImage(auxImg);
+	//thumbnailsImg[t2].setImage(auxImg);
 	thumbnailsImg[t2].setUrl(auxUrl);
 	thumbnailSelected=t2;
 }
@@ -107,7 +107,16 @@ void Gallery::moveThumbnail(int key){
 	}
 }
 void Gallery::keyReleased(int key){}
-void Gallery::mouseMoved(int x, int y){}
+
+void Gallery::mouseMoved(int x, int y){
+    for(int i = 0 ; i < numberOfMovies ; i++){
+        thumbnailsImg[i].mouseMoved(x,y);
+    }
+
+
+}
+
+
 void Gallery::mouseDragged(int x, int y, int button){}
 
 string Gallery::mousePressed(int x, int y, int button){
