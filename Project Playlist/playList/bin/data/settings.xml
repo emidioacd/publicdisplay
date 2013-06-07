@@ -1,0 +1,34 @@
+<videos>
+    <video>
+        <url>movies/1.mp4</url>
+        <firstFrame>91</firstFrame>
+    </video>
+    <video>
+        <url>movies/3.mp4</url>
+        <firstFrame>91</firstFrame>
+    </video>
+    <video>
+        <url>movies/BigBuckBunny.mp4</url>
+        <firstFrame>91</firstFrame>
+    </video>
+    <video>
+        <url>movies/fingers.mov</url>
+        <firstFrame>91</firstFrame>
+    </video>
+    <video>
+        <url>movies/fingers2.mov</url>
+        <firstFrame>91</firstFrame>
+    </video>
+    <video>
+        <url>movies/fingers3.mov</url>
+        <firstFrame>91</firstFrame>
+    </video>
+    <video>
+        <url>movies/fingers4.mov</url>
+        <firstFrame>91</firstFrame>
+    </video>
+    <video>
+        <url>movies/nasa1.1.mpg</url>
+        <firstFrame>91</firstFrame>
+    </video>
+</videos>
