@@ -7,7 +7,6 @@ const int sharperMatrix[3][3] =  {-1,-1,-1,-1,9,-1,-1,-1,-1};
 const int blurWeight = 25;
 const int edgesMatrix[3][3] =  {-1,-1,-1,-1,8,-1,-1,-1,-1};
 
-
 class Filter
 {
 public:
@@ -26,23 +25,24 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 
+
 	void negativeFilter();
 	void sharperFilter();
 	void blurFilter();
 	void bwFilter();
 	void greyFilter();
 	void edgesFilter();
-
 	void applyFilter();
 
 
-    void setVariables(int x, int y,int h, int w, int ph, int pw, string tf, int first, int last, ofVideoPlayer m);
+    	void setVariables(int x, int y,int h, int w, int ph, int pw, string tf, int first, int last, ofVideoPlayer m);
 
 	int truncColor(int color);
 
 
 private:
-    int movieHeight;
+	void guiEvent(ofxUIEventArgs &e);
+    	int movieHeight;
 	int movieWidth;
 	int posX;
 	int posY;
@@ -56,5 +56,7 @@ private:
     ofVideoPlayer movie;
     unsigned char * videoFilter;
     ofTexture videoTexture;
-    unsigned char * pixels;
+unsigned char * pixels;
+
+
 };

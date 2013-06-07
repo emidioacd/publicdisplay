@@ -1,22 +1,21 @@
+
 #pragma once
 #include "ofMain.h"
 #include "ofxUI.h"
 #include "ofxXmlSettings.h"
-#include "ofxCvHaarFinder.h"
+
 #include "Filter.h"
-#include "Movie.h"
 
 
-#define MARGIN 40
+const int posX = 40;
+const int posY = 40;
 
-const string xmlFile = "settings.xml";
-
-class PlayList
+class Movie
 {
 public:
-	PlayList(void){}
-	~PlayList(void){}
-	void setup();
+	Movie(void){}
+	~Movie(void){}
+	void setup(ofVideoPlayer movie, int numFilters, int firstFrame, int lastFrame);
 	void update();
 	void draw();
 	void keyPressed(int key);
@@ -28,30 +27,31 @@ public:
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
-	void movieToPlayer(int index);
-    bool loadPlaylist();
-
-
+	void pause(bool p);
+	void play();
+	void stop();
+    bool stopped();
+    int getHeight();
+    int getWidth();
+    void addFilter(int index,string filterName,int ff, int lf);
 
 private:
 
-	ofDirectory dir;
-
+    string url;
 	int playerWidth;
 	int playerHeight;
-    int camWidth;
-	int camHeight;
+	int w;
+	int h;
 
-	int currentMovie;
-	int numberOfMovies;
-    bool active;
+    ofVideoPlayer movie;
 
-    int wait;
+    int firstFrame;
+    int lastFrame;
 
-    vector<Movie> movies;
-    ofVideoPlayer moviePub;
-    ofVideoGrabber vidGrabber;
-    ofxCvHaarFinder finder;
+    vector<Filter> filters;
+
+
+
 
 };
 

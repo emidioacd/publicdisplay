@@ -2,7 +2,7 @@
 
 
     void mIcon::setup(int x0, int y0, int w, int h, string path){
-        cout << "loading movie: "<< url<<endl;
+        cout << "loading movie for micon: "<< path<<endl;
         hover = false;
         x = x0;
         y = y0;
@@ -10,6 +10,7 @@
         height = h;
         url = path;
         movie = ofVideoPlayer();
+
         movie.loadMovie(path);
         movie.setVolume(0);
 

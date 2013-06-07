@@ -49,6 +49,7 @@ private:
 	int galleryWidth;
 	int galleryHeight;
 
+
 	string convertInt(int number);
 	int getIndexMoviePressed(int x, int y);
 	void moveThumbnail(int key);

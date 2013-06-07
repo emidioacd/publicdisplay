@@ -5,27 +5,28 @@ void Gallery::setup(int galleryWidth){
 	width= galleryWidth;
 	items = width/(SIZE_G + MARGINBETWEENTHUMBNAIL);
 	totalSize = SIZE_G + MARGIN_G;
+    ofxXmlSettings settings;
+	bool hasFile = settings.loadFile(xmlFile);
 
-	//if(!loadGallery()){
     dir.listDir("movies");
-    dir.sort(); // in linux the file system doesn't return file lists ordered in alphabetical order
-    ofSetVerticalSync(true);
-    if( dir.size() ){
-        movies.assign(dir.size(), ofVideoPlayer());
-        thumbnailsImg.assign(dir.size(), mIcon());
-    }
-    numberOfMovies = dir.size();
-    for(int i = 0 ; i < numberOfMovies ; i++){
-        string path = dir.getPath(i);
-        movies[i].loadMovie(path);
-        cout<<"path: "<<dir.getPath(i)<<endl;
-        //thumbnailsImg[i].setUrl(path);
+	if(!loadGallery()){
+        dir.sort(); // in linux the file system doesn't return file lists ordered in alphabetical order
+        ofSetVerticalSync(true);
+        numberOfMovies = dir.size();
+        if( numberOfMovies ){
+            movies.assign(numberOfMovies, ofVideoPlayer());
+            thumbnailsImg.assign(numberOfMovies, mIcon());
+        }
 
-    }
-	//}
+        for(int i = 0 ; i < numberOfMovies ; i++){
+            string path = dir.getPath(i);
+            movies[i].loadMovie(path);
+            cout<<"path: "<<dir.getPath(i)<<endl;
+            //thumbnailsImg[i].setUrl(path);
+        }
+        first = true;
+	}
 	ofBackground(ofColor::white);
-    first = true;
-
 }
 
 void Gallery::update(){
@@ -36,6 +37,7 @@ void Gallery::update(){
 }
 
 void Gallery::draw(){
+
     if(numberOfMovies == 0){
 		ofSetColor(ofColor::gray);
 		string no_videos = "No videos!";
@@ -58,13 +60,12 @@ void Gallery::draw(){
 		if(thumbnailSelected==i)
 			ofSetColor(ofColor::blue);
 
-        if(first)
+        if(first){
             thumbnailsImg[i].setup(wmargin, hmargin, SIZE_G, SIZE_G,movies[i].getMoviePath());
-
+        }
         thumbnailsImg[i].draw();
 	}
 	first=false;
-
 }
 
 
@@ -196,32 +197,39 @@ void Gallery::saveGallery(){
 
 //guarda estado da galeria (ordem de apresentacao, frame de inicio, TODO)
 bool Gallery::loadGallery(){
-	ofxXmlSettings settings;
+    ofxXmlSettings settings;
 	bool hasFile = settings.loadFile(xmlFile);
+
 	if(hasFile)
 	{
 		settings.pushTag("videos");
 
 		int numTags = settings.getNumTags("video");
 		numberOfMovies = numTags;
-		movies.assign(numTags, ofVideoPlayer());
-		thumbnailsImg.assign(numTags, mIcon());
-		cout << "numTags: " << numTags << endl;
 
-		for(int i = 0 ; i<numTags ; i++)
+		movies.assign(numberOfMovies, ofVideoPlayer());
+        thumbnailsImg.assign(numberOfMovies, mIcon());
+		cout << "numTags: " << numberOfMovies << endl;
+
+		for(int i = 0 ; i<numberOfMovies ; i++)
 		{
 			settings.pushTag("video", i);
-			string url = settings.getValue("url", "");
-			thumbnailsImg[i].setFirstFrame(settings.getValue("firstFrame", 0));
-			cout << "url: " << url << endl;
+			string url = settings.getValue("url","");
+			//thumbnailsImg[i].setFirstFrame(settings.getValue("firstFrame", 0));
+
 			movies[i].loadMovie(url);
-			thumbnailsImg[i].setUrl(url);
+			//thumbnailsImg[i].setUrl(url);
+			cout << "url: " << settings.getValue("url","") << endl;
 			settings.popTag();
 		}
+
 			settings.popTag();
+			first = true;
 	}
 	return hasFile;
 }
+
+
 string Gallery::toString(int value){
 	ostringstream convert;
 	convert<<value;

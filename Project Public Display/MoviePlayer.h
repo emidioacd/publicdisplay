@@ -30,7 +30,10 @@ public:
     bool drawPadding;
 	float red, green, blue;
     ofImage middle;
+
+
 private:
+
 	int playerPosX;
 	int playerPosY;
 	bool hasMovieLoaded;
@@ -41,7 +44,10 @@ private:
 	int playerWidth;
 	int playerHeight;
 	int sliderHeight;
+
+	//para teste
     Filter filter;
+
 
 
 };

@@ -7,41 +7,28 @@ void PlayList::setup(){
 	playerHeight = 240;//ofGetWindowHeight()-topBarHeigh-sliderHeight;
     currentMovie = 0;
     wait = 100;
-    active = true;
 
     dir.listDir("movies");
     loadPlaylist();
-    moviePub = ofVideoPlayer();
-    moviePub.loadMovie("movies/pub.mp4");
-    /*
-    Para testes sem XML
 
-    if(!loadPlaylist()){
-        dir.sort(); // in linux the file system doesn't return file lists ordered in alphabetical order
-        ofSetVerticalSync(true);
-        if( dir.size() ){
-            movies.assign(dir.size(), ofVideoPlayer());
-        }
-        numberOfMovies = dir.size();
-        for(int i = 0 ; i < numberOfMovies ; i++){
-            string path = dir.getPath(i);
-            movies[i].loadMovie(path);
-        }
-    }*/
-	camWidth 		= 320;	// try to grab at this size.
+
+	camWidth 		= 320;
 	camHeight 		= 240;
 
 	vidGrabber.setVerbose(true);
 	vidGrabber.setDeviceID(1);
-	vidGrabber.setDesiredFrameRate(60);
+	vidGrabber.setDesiredFrameRate(24);
 	vidGrabber.initGrabber(camWidth,camHeight);
 
 	ofSetVerticalSync(true);
 
-
 	finder.setup("haarcascade_frontalface_default.xml");
 
-    //moviePub.play();
+    int h = movies[currentMovie].getHeight();
+    int w = movies[currentMovie].getWidth();
+
+
+    //Play da class Movie
     movies[currentMovie].play();
 }
 //--------------------------------------------------------------
@@ -52,53 +39,48 @@ void PlayList::update(){
     ofImage img = ofImage();
     img.setFromPixels(vidGrabber.getPixelsRef());
 
-        finder.findHaarObjects(img);
-        active = finder.blobs.size() > 0;
-        cout<<"FINDER: "<<finder.blobs.size()<<endl;
-        wait  = 0;
+    finder.findHaarObjects(img);
+    active = finder.blobs.size() > 0;
+    cout<<currentMovie<<endl;
+    if(movies[currentMovie].stopped()){
+
+           movieToPlayer(currentMovie+1);
+    }
 
 
+    if(!active) movies[currentMovie].pause(true);
+    else movies[currentMovie].pause(false);
 
-    if(nextMovie()) currentMovie = (currentMovie+1)%(numberOfMovies-1);
+
 
     movies[currentMovie].update();
-    if(!active)  movies[currentMovie].setPaused(true);
-    else movies[currentMovie].setPaused(false);
-
-
-    wait++;
-
 
 }
-bool PlayList::nextMovie(){
-    return movies[currentMovie].getTotalNumFrames() == movies[currentMovie].getCurrentFrame();
-}
+
 
 //--------------------------------------------------------------
 void PlayList::draw(){
+    movies[currentMovie].draw();
 
-    vidGrabber.draw(playerWidth+MARGIN*2,MARGIN);
+    vidGrabber.draw(playerWidth+(MARGIN*2),MARGIN,playerWidth, playerHeight);
     ofNoFill();
 
     for(int i = 0; i < finder.blobs.size(); i++) {
 		ofRectangle cur = finder.blobs[i].boundingRect;
 		ofRect(cur.x+playerWidth+MARGIN*2, cur.y+MARGIN, cur.width, cur.height);
-	}
-
-    movies[currentMovie].draw(MARGIN, MARGIN, playerWidth, playerHeight);
-
+    }
 }
-
-
 
 //--------------------------------------------------------------
 void PlayList::keyPressed(int key){
 
 	if(key==OF_KEY_LEFT){
-				movieToPlayer(currentMovie-1);
+	    movies[currentMovie].stop();
+        movieToPlayer(currentMovie-1);
     }
     else if(key==OF_KEY_RIGHT){
-            movieToPlayer(currentMovie+1);
+        movies[currentMovie].stop();
+        movieToPlayer(currentMovie+1);
     }
 
 }
@@ -114,7 +96,6 @@ void PlayList::dragEvent(ofDragInfo dragInfo){}
 
 //--------------------------------------------------------------
 void PlayList::movieToPlayer(int index){
-    movies[currentMovie].stop();
 
     if(index < 0)
         currentMovie = numberOfMovies-1;
@@ -122,8 +103,8 @@ void PlayList::movieToPlayer(int index){
         currentMovie = 0;
     else currentMovie = index;
 
+    movies[currentMovie].play();
 
-	movies[currentMovie].play();
 }
 
 //--------------------------------------------------------------
@@ -138,18 +119,42 @@ bool PlayList::loadPlaylist(){
 		int numTags = settings.getNumTags("video");
 		numberOfMovies = numTags;
 
-		movies.assign(numberOfMovies, ofVideoPlayer());
+		movies.assign(numberOfMovies, Movie());
+
 		cout << "numTags: " << numberOfMovies << endl;
 
 		for(int i = 0 ; i<numberOfMovies ; i++)
 		{
 			settings.pushTag("video", i);
 			string url = settings.getValue("url","");
-			movies[i].loadMovie(url);
-			cout << "url: " << settings.getValue("url","") << endl;
+
+			ofVideoPlayer movieAux= ofVideoPlayer();
+			movieAux.loadMovie(url);
+
+			int h = movieAux.getHeight();
+			int w = movieAux.getWidth();
+
+			int firstFrame = settings.getValue("firstFrame",1);
+			int lastFrame = settings.getValue("lastFrame",1);
+            settings.pushTag("filters");
+
+            int numFilters = settings.getNumTags("filter");
+
+            movies[i].setup(movieAux,numFilters, firstFrame, lastFrame);
+
+			for(int j = 0; j < numFilters; j++){
+                settings.pushTag("filter", j);
+                string filterName = settings.getValue("name","");
+                int ff = settings.getValue("firstFrame",1);
+                int lf = settings.getValue("lastFrame",1);
+
+                //Adiciona ao vector de filtros do video
+                movies[i].addFilter(j,filterName,ff, lf);
+                settings.popTag();
+			}
+			settings.popTag();
 			settings.popTag();
 		}
-
 			settings.popTag();
 	}
 	return hasFile;

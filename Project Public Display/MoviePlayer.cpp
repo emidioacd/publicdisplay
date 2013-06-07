@@ -29,7 +29,8 @@ void MoviePlayer::setup(int topBarHeigh){
 void MoviePlayer::update(){
 	if(hasMovieLoaded){
 		movie.update();
-		filter.update();
+		//para teste
+		//filter.update();
     }
 
 
@@ -44,7 +45,8 @@ void MoviePlayer::draw(){
 	ofSetColor(ofColor::white);
 	if(hasMovieLoaded){
 		movie.draw(playerPosX, playerPosY, playerWidth, playerHeight);
-        filter.draw();
+		//para teste
+        //filter.draw();
 
 		float currentF = (float)movie.getCurrentFrame();
 		int totalF = (float)movie.getTotalNumFrames();
@@ -106,7 +108,10 @@ void MoviePlayer::movieToPlayer(string movieToPlay){
     int movieHeight = movie.getHeight();
 	int movieWidth = movie.getWidth();
 
-    filter.setup(playerPosX, playerPosY, movieHeight,movieWidth, playerHeight,playerWidth, movie);
+
+    //para teste
+    //filter.setVariables(playerPosX, playerPosY, movieHeight, movieWidth, playerHeight, playerWidth, "negative", 1, movie.getTotalNumFrames(), movie);
+    //filter.setup();
 
 	hasMovieLoaded = true;
 	slider->setVisible(true);

@@ -3,10 +3,10 @@
 
 
 void Filter::setup(){
+
     videoTexture.allocate(movieWidth,movieHeight, GL_RGB);
     videoFilter	= new unsigned char[movieWidth*movieHeight*3];
 }
-
 
 void Filter::setVariables(int x, int y,int h, int w, int ph, int pw, string tf, int first, int last, ofVideoPlayer m){
     movie = m;
@@ -22,16 +22,18 @@ void Filter::setVariables(int x, int y,int h, int w, int ph, int pw, string tf, 
     lastFrame = last;
 }
 
-
 void Filter::update(){
-   int current = movie.getCurrentFrame();
-   if(current >= firstFrame-3 && current <= lastFrame-3){
-       applyFilter();
-   }
+    int current = movie.getCurrentFrame();
+    if(current >= firstFrame-3 && current <= lastFrame-3){
+            applyFilter();
+    }
+
 }
 
 void Filter::draw(){
-    videoTexture.draw(posX,posY,playerWidth,playerHeight);
+     int current = movie.getCurrentFrame();
+    if(current >= firstFrame-3 && current <= lastFrame-3)
+       videoTexture.draw(posX,posY,playerWidth,playerHeight);
 }
 
 void Filter::applyFilter(){
@@ -51,13 +53,14 @@ void Filter::applyFilter(){
     }
 }
 
-
-
 void Filter::negativeFilter(){
+
     if (movie.isFrameNew()){
+
         int totalPixels = movieWidth*movieHeight*3;
         unsigned char * pixels = movie.getPixels();
         for (int i = 0; i < totalPixels; i++){
+
             videoFilter[i] = 255 - pixels[i];
         }
         videoTexture.loadData(videoFilter, movieWidth,movieHeight, GL_RGB);
@@ -93,8 +96,6 @@ void Filter::sharperFilter(){
     videoTexture.loadData(videoFilter, movieWidth,movieHeight, GL_RGB);
 }
 
-
-
 void Filter::blurFilter(){
     int totalPixels = movieWidth*movieHeight*3;
     pixels = movie.getPixels();
@@ -127,6 +128,7 @@ void Filter::blurFilter(){
 }
 
 void Filter::bwFilter(){
+
     int totalPixels = movieWidth*movieHeight*3;
     pixels = movie.getPixels();
 
@@ -135,10 +137,11 @@ void Filter::bwFilter(){
 
             int index = ((h*movieWidth)+w)*3;
 
+
             int result = ((pixels[index]+pixels[index+1]+pixels[index+2])/3 > 128) ? 255 : 0;
 
             videoFilter[index] = result;
-            videoFilter[index+1] = result ;
+            videoFilter[index+1] = result;
             videoFilter[index+2] = result;
         }
     }
@@ -212,6 +215,12 @@ int Filter::truncColor(int color)
 }
 
 
+
+
+void Filter::guiEvent(ofxUIEventArgs &e)
+{
+
+}
 
 void Filter::keyPressed(int key){
 }
